@@ -728,6 +728,30 @@ html{scrollbar-gutter:stable}
 .foot .pill:hover{color:var(--hot);border-color:color-mix(in srgb,var(--hot) 55%,transparent)}
 .foot-bar{border-top-color:rgba(255,255,255,.12)}
 @media (max-width:899px){.foot-media img,.foot-media video{filter:blur(8px) saturate(1.1)}}
+
+/* ---------- footer top edge: laser line with a running light ---------- */
+.foot{border-top:0}
+.foot::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;z-index:2;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(229,57,53,.55) 20%,rgba(255,138,61,.7) 50%,rgba(229,57,53,.55) 80%,transparent);
+  box-shadow:0 0 8px rgba(229,57,53,.55),0 0 22px rgba(229,57,53,.25);animation:laserPulse 2.4s ease-in-out infinite}
+.foot::after{content:"";position:absolute;left:0;top:-1px;width:30%;height:3px;z-index:3;pointer-events:none;border-radius:3px;
+  background:linear-gradient(90deg,transparent,#E53935 35%,#FF8A3D 70%,#fff 92%,transparent);
+  box-shadow:0 0 10px 1px rgba(255,94,58,.85),0 0 28px 4px rgba(229,57,53,.45);
+  transform:translateX(-100%);animation:laserRun 3.6s cubic-bezier(.45,.05,.55,.95) infinite;will-change:transform}
+@keyframes laserRun{to{transform:translateX(340%)}}
+@keyframes laserPulse{50%{opacity:.6}}
+@media (prefers-reduced-motion:reduce){.foot::after{display:none}}
+
+/* ---------- logo: racing wheel spin on hover (rev up, then full speed) ---------- */
+.brand img,.hero-tag img{will-change:transform}
+.brand:hover img,.brand:focus-visible img,.hero-tag img:hover{
+  animation:revUp .55s cubic-bezier(.55,0,1,.45) forwards,wheelFast .22s linear .55s infinite,burn .5s ease-in-out .55s infinite alternate}
+.brand:hover span,.brand:focus-visible span{animation:launch .09s linear .1s 6}
+@keyframes revUp{from{transform:rotate(0)}to{transform:rotate(720deg)}}
+@keyframes wheelFast{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes burn{from{filter:drop-shadow(0 0 6px rgba(255,94,58,.55)) blur(.3px)}to{filter:drop-shadow(0 0 14px rgba(229,57,53,.9)) drop-shadow(0 0 3px #FF8A3D) blur(.6px)}}
+@keyframes launch{0%,100%{transform:translateX(0)}50%{transform:translateX(1.5px)}}
+@media (prefers-reduced-motion:reduce){.brand:hover img,.hero-tag img:hover,.brand:hover span{animation:none}}
 </style>
 </head>
 <body>
