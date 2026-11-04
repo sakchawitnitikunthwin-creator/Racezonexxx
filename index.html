@@ -711,6 +711,23 @@ html{scrollbar-gutter:stable}
 .sbox{margin:0 2px 20px;padding:4px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border)}
 .drawer .srow{min-height:50px}
 .drawer .sl{font-size:15px}
+
+/* ---------- footer: blurred video background ---------- */
+.foot{position:relative;overflow:hidden;background:#07080B;color:#E6E8EC;border-top:1px solid rgba(255,255,255,.08)}
+.foot-media{position:absolute;inset:0;z-index:0;pointer-events:none}
+.foot-media img,.foot-media video{position:absolute;inset:-24px;width:calc(100% + 48px);height:calc(100% + 48px);object-fit:cover;object-position:50% 60%;filter:blur(10px) saturate(1.15);transform:translateZ(0)}
+.foot-media video{opacity:0;transition:opacity .8s}
+.foot-media video.on{opacity:1}
+.foot-media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,11,.92) 0%,rgba(7,8,11,.62) 45%,rgba(7,8,11,.82) 100%),linear-gradient(90deg,rgba(7,8,11,.55),transparent 60%)}
+.foot .wrap{position:relative;z-index:1}
+/* footer stays dark in both themes so text over the clip is always readable */
+.foot p,.foot nav a,.foot-bar small,.made{color:#B9BFCA}
+.foot nav a:hover{color:var(--hot)}
+.foot .brand b{color:#fff}.foot .brand small{color:#9AA1AE}
+.foot .pill{color:#D9DDE4;border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.04)}
+.foot .pill:hover{color:var(--hot);border-color:color-mix(in srgb,var(--hot) 55%,transparent)}
+.foot-bar{border-top-color:rgba(255,255,255,.12)}
+@media (max-width:899px){.foot-media img,.foot-media video{filter:blur(8px) saturate(1.1)}}
 </style>
 </head>
 <body>
@@ -805,7 +822,7 @@ html{scrollbar-gutter:stable}
   </div>
 </section>
 </main>
-<footer class="foot"><div class="wrap">
+<footer class="foot"><div class="foot-media" aria-hidden="true"><img src="hero-poster.jpg" alt="" loading="lazy" width="1280" height="720"><video data-foot-video muted loop playsinline preload="none" poster="hero-poster.jpg"><source src="hero.mp4" type="video/mp4"></video></div><div class="wrap">
   <div><a class="brand" href="#top"><img src="logo-192.webp" width="56" height="56" alt="" loading="lazy"><span><b>RACE ZONE</b><small>PROJECT</small></span></a><p>ขอบคุณผู้เล่นทุกท่านที่ร่วมสร้างเมือง RACE ZONE ไปด้วยกัน</p>
     <div class="foot-set"><button type="button" class="pill" data-lang-toggle><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-globe"/></svg><span data-i18n="lang.to">English</span></button><button type="button" class="pill" data-fx-toggle aria-pressed="true"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-sparkles"/></svg><span data-i18n="fx">เอฟเฟกต์พื้นหลัง</span></button></div></div>
   <nav aria-label="หมวดกฎทั้งหมด" data-i18n-attr="aria-label:foot.all"><a href="#city" class="t-city"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-building"/></svg><span data-i18n="cat.city">กฎเมือง</span></a><a href="#race" class="t-race"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-flag"/></svg><span data-i18n="cat.race">กฎสนามแข่ง</span></a><a href="#story" class="t-story"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-swords"/></svg><span data-i18n="cat.story">Story แข่งขัน</span></a><a href="#police" class="t-police"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-shield"/></svg><span data-i18n="cat.police">กฎตำรวจ</span></a><a href="#medic" class="t-medic"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-heart-pulse"/></svg><span data-i18n="cat.medic">กฎหมอ</span></a><a href="#mech" class="t-mech"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-wrench"/></svg><span data-i18n="cat.mech">กฎช่าง</span></a><a href="#about"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-users"/></svg><span data-i18n="nav.about">เกี่ยวกับเรา</span></a><a href="https://discord.gg/XgPuh4YzU" target="_blank" rel="noopener"><svg class="ic sm" aria-hidden="true" viewBox="0 0 24 24"><use href="#i-discord"/></svg>Discord</a></nav>
@@ -1145,6 +1162,17 @@ function setFx(on,say){if(on)delete root.dataset.fx;else root.dataset.fx="off";s
 $$("[data-fx-toggle]").forEach(function(b){b.addEventListener("click",function(){setFx(!fxOn(),true)})});
 $$("[data-seg-fx] button").forEach(function(b){b.addEventListener("click",function(){setFx(b.dataset.v==="on")})});
 paintFx(); paintLangUi(); if(lang==="en")applyLang("en",true); paintSetBtn();
+
+/* ---------- footer video: blurred clip, plays only while the footer is on screen ---------- */
+(function(){
+  var fv=$("[data-foot-video]"), cn=navigator.connection||{};
+  if(!fv||reduce||cn.saveData||!("IntersectionObserver" in window))return;
+  var loaded=false;
+  new IntersectionObserver(function(en){en.forEach(function(x){
+    if(x.isIntersecting){if(!loaded){fv.preload="auto";loaded=true}var p=fv.play();if(p&&p.catch)p.catch(function(){});fv.classList.add("on")}
+    else fv.pause();
+  })},{rootMargin:"200px 0px"}).observe(fv);
+})();
 
 /* ---------- hero video: desktop only, never with reduced motion or data saver ---------- */
 var v=$("[data-hero-video]"), conn=navigator.connection||{};
