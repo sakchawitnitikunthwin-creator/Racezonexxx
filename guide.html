@@ -74,7 +74,7 @@ img{max-width:100%;display:block}
 .cut{clip-path:polygon(var(--cut) 0,100% 0,100% calc(100% - var(--cut)),calc(100% - var(--cut)) 100%,0 100%,0 var(--cut))}
 
 /* header */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 95%,transparent);border-bottom:1px solid var(--border)}
 .top .wrap{height:var(--header-h);display:flex;align-items:center;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;flex:none}
 .brand img{width:36px;height:36px}
@@ -250,6 +250,20 @@ footer{border-top:1px solid var(--border);padding-block:24px calc(24px + env(saf
 footer .wrap{display:flex;flex-wrap:wrap;gap:10px 20px;justify-content:space-between}
 footer a:hover{color:var(--hot)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+
+/* rounded, modern controls (same as the rules page) */
+.search input{border-radius:999px;clip-path:none}
+.gic{clip-path:none;border-radius:14px}
+.topic{clip-path:none;border-radius:16px}
+.tile,.item,.price,.tbl,.shot,.answer,.note,.soon,.rail a,.tablist button{border-radius:12px}
+.answer,.note{border-left-width:0;box-shadow:inset 3px 0 0 currentColor}
+.answer{box-shadow:inset 3px 0 0 var(--good)}.note{box-shadow:inset 3px 0 0 var(--info)}.note.warn{box-shadow:inset 3px 0 0 var(--warn)}
+.chips li,.tag,.th .kick{border-radius:999px}
+.item .iic{border-radius:10px}
+.tablist button{border-radius:10px 10px 0 0}
+.lb button{border-radius:50%}
+.toast{border-radius:999px}
+.shot.mini{border-radius:0}
 </style>
 </head>
 <body>
